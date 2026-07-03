@@ -67,6 +67,7 @@ function Nav() {
 }
 
 function Hero() {
+  const navigate = useNavigate();
   return (
     <section
       className="relative overflow-hidden"
@@ -85,7 +86,7 @@ function Hero() {
             The affordable alternative to SignalHire, ZoomInfo and ContactOut — starting at just $9.99/month.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90" style={{ boxShadow: "var(--shadow-glow)" }}>
+            <Button size="lg" onClick={() => navigate({ to: "/auth" })} className="bg-primary text-primary-foreground hover:bg-primary/90" style={{ boxShadow: "var(--shadow-glow)" }}>
               Start free — 25 credits
             </Button>
             <Button size="lg" variant="outline">
@@ -211,6 +212,7 @@ function Comparison() {
 }
 
 function Pricing() {
+  const navigate = useNavigate();
   const plans = [
     {
       name: "Starter",
@@ -264,6 +266,7 @@ function Pricing() {
             </div>
             <p className="mt-1 text-xs text-muted-foreground">Billed monthly · 40% off yearly</p>
             <Button
+              onClick={() => navigate({ to: "/auth" })}
               className={`mt-6 ${p.highlight ? "bg-primary text-primary-foreground hover:bg-primary/90" : ""}`}
               variant={p.highlight ? "default" : "outline"}
             >
