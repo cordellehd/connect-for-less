@@ -1,7 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Check, X, Search, Shield, Zap, Mail, Phone, Linkedin, Sparkles, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero.jpg";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -23,13 +25,20 @@ function Index() {
 }
 
 function Nav() {
+  const [signedIn, setSignedIn] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(!!s));
+    return () => sub.subscription.unsubscribe();
+  }, []);
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#" className="flex items-center gap-2 font-bold text-lg">
+        <Link to="/" className="flex items-center gap-2 font-bold text-lg">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground">R</span>
           Reachly
-        </a>
+        </Link>
         <nav className="hidden gap-8 text-sm text-muted-foreground md:flex">
           <a href="#features" className="hover:text-foreground">Features</a>
           <a href="#compare" className="hover:text-foreground">Compare</a>
@@ -37,8 +46,20 @@ function Nav() {
           <a href="#faq" className="hover:text-foreground">FAQ</a>
         </nav>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="hidden sm:inline-flex">Sign in</Button>
-          <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">Start free</Button>
+          {signedIn ? (
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => navigate({ to: "/dashboard" })}>
+              Open dashboard
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" className="hidden sm:inline-flex" onClick={() => navigate({ to: "/auth" })}>
+                Sign in
+              </Button>
+              <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => navigate({ to: "/auth" })}>
+                Start free
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>
@@ -46,6 +67,7 @@ function Nav() {
 }
 
 function Hero() {
+  const navigate = useNavigate();
   return (
     <section
       className="relative overflow-hidden"
@@ -64,7 +86,7 @@ function Hero() {
             The affordable alternative to SignalHire, ZoomInfo and ContactOut — starting at just $9.99/month.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90" style={{ boxShadow: "var(--shadow-glow)" }}>
+            <Button size="lg" onClick={() => navigate({ to: "/auth" })} className="bg-primary text-primary-foreground hover:bg-primary/90" style={{ boxShadow: "var(--shadow-glow)" }}>
               Start free — 25 credits
             </Button>
             <Button size="lg" variant="outline">
@@ -190,6 +212,7 @@ function Comparison() {
 }
 
 function Pricing() {
+  const navigate = useNavigate();
   const plans = [
     {
       name: "Starter",
@@ -243,6 +266,7 @@ function Pricing() {
             </div>
             <p className="mt-1 text-xs text-muted-foreground">Billed monthly · 40% off yearly</p>
             <Button
+              onClick={() => navigate({ to: "/auth" })}
               className={`mt-6 ${p.highlight ? "bg-primary text-primary-foreground hover:bg-primary/90" : ""}`}
               variant={p.highlight ? "default" : "outline"}
             >
