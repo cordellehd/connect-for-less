@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero.jpg";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { motion } from "motion/react";
+import { Reveal, fadeUp, stagger } from "@/components/reveal";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -74,37 +76,53 @@ function Hero() {
       style={{ background: "var(--gradient-hero)" }}
     >
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
-        <div className="flex flex-col justify-center">
-          <span className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+        <motion.div
+          className="flex flex-col justify-center"
+          variants={stagger}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.span variants={fadeUp} className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
             <Sparkles className="h-3.5 w-3.5" /> 700M+ verified contacts · from $9.99/mo
-          </span>
-          <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+          </motion.span>
+          <motion.h1 variants={fadeUp} className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
             Reach anyone. <span className="bg-clip-text text-transparent" style={{ backgroundImage: "var(--gradient-primary)" }}>For a fraction of the price.</span>
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+          </motion.h1>
+          <motion.p variants={fadeUp} className="mt-6 max-w-xl text-lg text-muted-foreground">
             Verified emails, direct dials, and LinkedIn enrichment for sales and recruiting teams.
             The affordable alternative to SignalHire, ZoomInfo and ContactOut — starting at just $9.99/month.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button size="lg" onClick={() => navigate({ to: "/auth" })} className="bg-primary text-primary-foreground hover:bg-primary/90" style={{ boxShadow: "var(--shadow-glow)" }}>
+          </motion.p>
+          <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
+            <Button size="lg" onClick={() => navigate({ to: "/auth" })} className="bg-primary text-primary-foreground transition-transform hover:scale-105 hover:bg-primary/90 active:scale-95" style={{ boxShadow: "var(--shadow-glow)" }}>
               Start free — 25 credits
             </Button>
-            <Button size="lg" variant="outline">
+            <Button size="lg" variant="outline" className="transition-transform hover:scale-105 active:scale-95">
               <Download className="mr-2 h-4 w-4" /> Get the app
             </Button>
-          </div>
-          <p className="mt-4 text-xs text-muted-foreground">No credit card required · Cancel anytime · Save 40% annually</p>
-        </div>
-        <div className="relative">
-          <div className="absolute -inset-4 rounded-3xl bg-primary/20 blur-3xl" />
-          <img
+          </motion.div>
+          <motion.p variants={fadeUp} className="mt-4 text-xs text-muted-foreground">No credit card required · Cancel anytime · Save 40% annually</motion.p>
+        </motion.div>
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, scale: 0.94, y: 24 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+        >
+          <motion.div
+            className="absolute -inset-4 rounded-3xl bg-primary/20 blur-3xl"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.img
             src={heroImg}
             alt="Reachly contact intelligence network"
             width={1600}
             height={1200}
             className="relative rounded-2xl border border-border/50 shadow-2xl"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
