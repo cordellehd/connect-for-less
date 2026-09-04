@@ -113,15 +113,26 @@ function Hero() {
             animate={{ opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
-          <motion.img
-            src={heroImg}
-            alt="Reachly contact intelligence network"
-            width={1600}
-            height={1200}
-            className="relative rounded-2xl border border-border/50 shadow-2xl"
+          <motion.div
+            className="relative aspect-square w-full overflow-hidden rounded-2xl border border-border/50 shadow-2xl"
+            style={{ background: "var(--gradient-hero)" }}
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
+          >
+            <ClientOnly
+              fallback={
+                <img
+                  src={heroImg}
+                  alt="Reachly contact intelligence network"
+                  width={1600}
+                  height={1200}
+                  className="h-full w-full object-cover"
+                />
+              }
+            >
+              <HeroGlobe />
+            </ClientOnly>
+          </motion.div>
         </motion.div>
       </div>
     </section>
