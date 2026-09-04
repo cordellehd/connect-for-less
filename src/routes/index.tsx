@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, ClientOnly } from "@tanstack/react-router";
+import { lazy } from "react";
 import { Check, X, Search, Shield, Zap, Mail, Phone, Linkedin, Sparkles, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero.jpg";
@@ -6,6 +7,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "motion/react";
 import { Reveal, fadeUp, stagger } from "@/components/reveal";
+
+const HeroGlobe = lazy(() => import("@/components/hero-globe"));
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -113,15 +116,26 @@ function Hero() {
             animate={{ opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
-          <motion.img
-            src={heroImg}
-            alt="Reachly contact intelligence network"
-            width={1600}
-            height={1200}
-            className="relative rounded-2xl border border-border/50 shadow-2xl"
+          <motion.div
+            className="relative aspect-square w-full overflow-hidden rounded-2xl border border-border/50 shadow-2xl"
+            style={{ background: "var(--gradient-hero)" }}
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
+          >
+            <ClientOnly
+              fallback={
+                <img
+                  src={heroImg}
+                  alt="Reachly contact intelligence network"
+                  width={1600}
+                  height={1200}
+                  className="h-full w-full object-cover"
+                />
+              }
+            >
+              <HeroGlobe />
+            </ClientOnly>
+          </motion.div>
         </motion.div>
       </div>
     </section>
