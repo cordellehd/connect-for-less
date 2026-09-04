@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero.jpg";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { motion } from "motion/react";
+import { Reveal, fadeUp, stagger } from "@/components/reveal";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -74,37 +76,53 @@ function Hero() {
       style={{ background: "var(--gradient-hero)" }}
     >
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
-        <div className="flex flex-col justify-center">
-          <span className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+        <motion.div
+          className="flex flex-col justify-center"
+          variants={stagger}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.span variants={fadeUp} className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
             <Sparkles className="h-3.5 w-3.5" /> 700M+ verified contacts · from $9.99/mo
-          </span>
-          <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+          </motion.span>
+          <motion.h1 variants={fadeUp} className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
             Reach anyone. <span className="bg-clip-text text-transparent" style={{ backgroundImage: "var(--gradient-primary)" }}>For a fraction of the price.</span>
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+          </motion.h1>
+          <motion.p variants={fadeUp} className="mt-6 max-w-xl text-lg text-muted-foreground">
             Verified emails, direct dials, and LinkedIn enrichment for sales and recruiting teams.
             The affordable alternative to SignalHire, ZoomInfo and ContactOut — starting at just $9.99/month.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button size="lg" onClick={() => navigate({ to: "/auth" })} className="bg-primary text-primary-foreground hover:bg-primary/90" style={{ boxShadow: "var(--shadow-glow)" }}>
+          </motion.p>
+          <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
+            <Button size="lg" onClick={() => navigate({ to: "/auth" })} className="bg-primary text-primary-foreground transition-transform hover:scale-105 hover:bg-primary/90 active:scale-95" style={{ boxShadow: "var(--shadow-glow)" }}>
               Start free — 25 credits
             </Button>
-            <Button size="lg" variant="outline">
+            <Button size="lg" variant="outline" className="transition-transform hover:scale-105 active:scale-95">
               <Download className="mr-2 h-4 w-4" /> Get the app
             </Button>
-          </div>
-          <p className="mt-4 text-xs text-muted-foreground">No credit card required · Cancel anytime · Save 40% annually</p>
-        </div>
-        <div className="relative">
-          <div className="absolute -inset-4 rounded-3xl bg-primary/20 blur-3xl" />
-          <img
+          </motion.div>
+          <motion.p variants={fadeUp} className="mt-4 text-xs text-muted-foreground">No credit card required · Cancel anytime · Save 40% annually</motion.p>
+        </motion.div>
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, scale: 0.94, y: 24 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+        >
+          <motion.div
+            className="absolute -inset-4 rounded-3xl bg-primary/20 blur-3xl"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.img
             src={heroImg}
             alt="Reachly contact intelligence network"
             width={1600}
             height={1200}
             className="relative rounded-2xl border border-border/50 shadow-2xl"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -115,12 +133,14 @@ function Logos() {
   return (
     <div className="border-y border-border/60 bg-card/30">
       <div className="mx-auto max-w-6xl px-6 py-8">
-        <p className="text-center text-xs uppercase tracking-widest text-muted-foreground">Trusted by teams at</p>
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 opacity-70">
-          {names.map((n) => (
-            <span key={n} className="text-lg font-semibold text-muted-foreground">{n}</span>
-          ))}
-        </div>
+        <Reveal>
+          <p className="text-center text-xs uppercase tracking-widest text-muted-foreground">Trusted by teams at</p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 opacity-70">
+            {names.map((n) => (
+              <span key={n} className="text-lg font-semibold text-muted-foreground transition hover:text-foreground">{n}</span>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </div>
   );
@@ -137,21 +157,32 @@ function Features() {
   ];
   return (
     <section id="features" className="mx-auto max-w-6xl px-6 py-24">
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Everything you need to prospect faster</h2>
         <p className="mt-4 text-muted-foreground">One tool for sales, recruiting and founders — without the enterprise price tag.</p>
-      </div>
-      <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      </Reveal>
+      <motion.div
+        className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        variants={stagger}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+      >
         {items.map(({ icon: Icon, title, body }) => (
-          <div key={title} className="rounded-2xl border border-border bg-card p-6 transition hover:border-primary/50">
+          <motion.div
+            key={title}
+            variants={fadeUp}
+            whileHover={{ y: -6, transition: { duration: 0.25 } }}
+            className="rounded-2xl border border-border bg-card p-6 transition-colors hover:border-primary/50"
+          >
             <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary/15 text-primary">
               <Icon className="h-5 w-5" />
             </div>
             <h3 className="mt-5 text-lg font-semibold">{title}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{body}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -176,11 +207,11 @@ function Comparison() {
   return (
     <section id="compare" className="border-y border-border/60 bg-card/30">
       <div className="mx-auto max-w-6xl px-6 py-24">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">How we compare</h2>
           <p className="mt-4 text-muted-foreground">The same verified data as the big players — at a price teams can actually afford.</p>
-        </div>
-        <div className="mt-12 overflow-x-auto rounded-2xl border border-border bg-card">
+        </Reveal>
+        <Reveal className="mt-12 overflow-x-auto rounded-2xl border border-border bg-card" delay={0.1}>
           <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr className="border-b border-border">
@@ -205,7 +236,7 @@ function Comparison() {
               ))}
             </tbody>
           </table>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -236,16 +267,24 @@ function Pricing() {
   ];
   return (
     <section id="pricing" className="mx-auto max-w-6xl px-6 py-24">
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Simple, honest pricing</h2>
         <p className="mt-4 text-muted-foreground">
           Save an extra <span className="font-semibold text-primary">40% when billed annually</span>. No hidden fees, no forced annual contracts.
         </p>
-      </div>
-      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+      </Reveal>
+      <motion.div
+        className="mt-14 grid gap-6 lg:grid-cols-3"
+        variants={stagger}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+      >
         {plans.map((p) => (
-          <div
+          <motion.div
             key={p.name}
+            variants={fadeUp}
+            whileHover={{ y: -8, transition: { duration: 0.25 } }}
             className={`relative flex flex-col rounded-2xl border p-8 ${
               p.highlight
                 ? "border-primary bg-card"
@@ -280,9 +319,9 @@ function Pricing() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       <p className="mt-8 text-center text-sm text-muted-foreground">
         Need more volume? <a className="text-primary hover:underline" href="#">Talk to sales</a> about custom Enterprise plans.
       </p>
@@ -301,18 +340,22 @@ function FAQ() {
   return (
     <section id="faq" className="border-t border-border/60 bg-card/30">
       <div className="mx-auto max-w-3xl px-6 py-24">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Frequently asked questions</h2>
+        <Reveal>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Frequently asked questions</h2>
+        </Reveal>
         <div className="mt-10 space-y-4">
-          {faqs.map((f) => (
-            <details key={f.q} className="group rounded-xl border border-border bg-card p-5 open:border-primary/50">
-              <summary className="cursor-pointer list-none font-medium marker:hidden">
-                <div className="flex items-center justify-between gap-4">
-                  {f.q}
-                  <span className="text-primary transition group-open:rotate-45">+</span>
-                </div>
-              </summary>
-              <p className="mt-3 text-sm text-muted-foreground">{f.a}</p>
-            </details>
+          {faqs.map((f, i) => (
+            <Reveal key={f.q} delay={i * 0.06}>
+              <details className="group rounded-xl border border-border bg-card p-5 transition-colors open:border-primary/50">
+                <summary className="cursor-pointer list-none font-medium marker:hidden">
+                  <div className="flex items-center justify-between gap-4">
+                    {f.q}
+                    <span className="text-primary transition-transform duration-300 group-open:rotate-45">+</span>
+                  </div>
+                </summary>
+                <p className="mt-3 text-sm text-muted-foreground">{f.a}</p>
+              </details>
+            </Reveal>
           ))}
         </div>
       </div>
