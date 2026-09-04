@@ -133,12 +133,14 @@ function Logos() {
   return (
     <div className="border-y border-border/60 bg-card/30">
       <div className="mx-auto max-w-6xl px-6 py-8">
-        <p className="text-center text-xs uppercase tracking-widest text-muted-foreground">Trusted by teams at</p>
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 opacity-70">
-          {names.map((n) => (
-            <span key={n} className="text-lg font-semibold text-muted-foreground">{n}</span>
-          ))}
-        </div>
+        <Reveal>
+          <p className="text-center text-xs uppercase tracking-widest text-muted-foreground">Trusted by teams at</p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 opacity-70">
+            {names.map((n) => (
+              <span key={n} className="text-lg font-semibold text-muted-foreground transition hover:text-foreground">{n}</span>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </div>
   );
@@ -155,21 +157,32 @@ function Features() {
   ];
   return (
     <section id="features" className="mx-auto max-w-6xl px-6 py-24">
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Everything you need to prospect faster</h2>
         <p className="mt-4 text-muted-foreground">One tool for sales, recruiting and founders — without the enterprise price tag.</p>
-      </div>
-      <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      </Reveal>
+      <motion.div
+        className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        variants={stagger}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+      >
         {items.map(({ icon: Icon, title, body }) => (
-          <div key={title} className="rounded-2xl border border-border bg-card p-6 transition hover:border-primary/50">
+          <motion.div
+            key={title}
+            variants={fadeUp}
+            whileHover={{ y: -6, transition: { duration: 0.25 } }}
+            className="rounded-2xl border border-border bg-card p-6 transition-colors hover:border-primary/50"
+          >
             <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary/15 text-primary">
               <Icon className="h-5 w-5" />
             </div>
             <h3 className="mt-5 text-lg font-semibold">{title}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{body}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
