@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, ClientOnly } from "@tanstack/react-router";
+import { lazy } from "react";
 import { Check, X, Search, Shield, Zap, Mail, Phone, Linkedin, Sparkles, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero.jpg";
