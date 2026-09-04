@@ -207,11 +207,11 @@ function Comparison() {
   return (
     <section id="compare" className="border-y border-border/60 bg-card/30">
       <div className="mx-auto max-w-6xl px-6 py-24">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">How we compare</h2>
           <p className="mt-4 text-muted-foreground">The same verified data as the big players — at a price teams can actually afford.</p>
-        </div>
-        <div className="mt-12 overflow-x-auto rounded-2xl border border-border bg-card">
+        </Reveal>
+        <Reveal className="mt-12 overflow-x-auto rounded-2xl border border-border bg-card" delay={0.1}>
           <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr className="border-b border-border">
@@ -236,7 +236,7 @@ function Comparison() {
               ))}
             </tbody>
           </table>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -267,16 +267,24 @@ function Pricing() {
   ];
   return (
     <section id="pricing" className="mx-auto max-w-6xl px-6 py-24">
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Simple, honest pricing</h2>
         <p className="mt-4 text-muted-foreground">
           Save an extra <span className="font-semibold text-primary">40% when billed annually</span>. No hidden fees, no forced annual contracts.
         </p>
-      </div>
-      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+      </Reveal>
+      <motion.div
+        className="mt-14 grid gap-6 lg:grid-cols-3"
+        variants={stagger}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+      >
         {plans.map((p) => (
-          <div
+          <motion.div
             key={p.name}
+            variants={fadeUp}
+            whileHover={{ y: -8, transition: { duration: 0.25 } }}
             className={`relative flex flex-col rounded-2xl border p-8 ${
               p.highlight
                 ? "border-primary bg-card"
@@ -311,9 +319,9 @@ function Pricing() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       <p className="mt-8 text-center text-sm text-muted-foreground">
         Need more volume? <a className="text-primary hover:underline" href="#">Talk to sales</a> about custom Enterprise plans.
       </p>
@@ -332,18 +340,22 @@ function FAQ() {
   return (
     <section id="faq" className="border-t border-border/60 bg-card/30">
       <div className="mx-auto max-w-3xl px-6 py-24">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Frequently asked questions</h2>
+        <Reveal>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Frequently asked questions</h2>
+        </Reveal>
         <div className="mt-10 space-y-4">
-          {faqs.map((f) => (
-            <details key={f.q} className="group rounded-xl border border-border bg-card p-5 open:border-primary/50">
-              <summary className="cursor-pointer list-none font-medium marker:hidden">
-                <div className="flex items-center justify-between gap-4">
-                  {f.q}
-                  <span className="text-primary transition group-open:rotate-45">+</span>
-                </div>
-              </summary>
-              <p className="mt-3 text-sm text-muted-foreground">{f.a}</p>
-            </details>
+          {faqs.map((f, i) => (
+            <Reveal key={f.q} delay={i * 0.06}>
+              <details className="group rounded-xl border border-border bg-card p-5 transition-colors open:border-primary/50">
+                <summary className="cursor-pointer list-none font-medium marker:hidden">
+                  <div className="flex items-center justify-between gap-4">
+                    {f.q}
+                    <span className="text-primary transition-transform duration-300 group-open:rotate-45">+</span>
+                  </div>
+                </summary>
+                <p className="mt-3 text-sm text-muted-foreground">{f.a}</p>
+              </details>
+            </Reveal>
           ))}
         </div>
       </div>
