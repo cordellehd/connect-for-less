@@ -8,6 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "motion/react";
 import { Reveal, fadeUp, stagger } from "@/components/reveal";
 
+const HeroGlobe = lazy(() => import("@/components/hero-globe"));
+
 export const Route = createFileRoute("/")({
   component: Index,
 });
