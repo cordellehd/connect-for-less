@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "sdk_version": "2.0.4",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "connect-save",
+      "version": "0.1.0",
+      "title": "Connect & Save"
+    },
+    "tools": [
+      {
+        "name": "list_plans",
+        "title": "List subscription plans",
+        "description": "List Reachly's public subscription plans with monthly prices, included credits and features, optionally priced with the annual discount applied.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "billing": {
+              "default": "monthly",
+              "description": "Which billing cycle to price the plans for.",
+              "type": "string",
+              "enum": [
+                "monthly",
+                "annual"
+              ]
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_features",
+        "title": "List product features",
+        "description": "List Reachly's product features, such as verified emails, direct dials, CRM sync and compliance.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "compare_competitors",
+        "title": "Compare Reachly with competitors",
+        "description": "Compare Reachly against SignalHire, ZoomInfo and ContactOut on price, data coverage, integrations, trial credits and discounts.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "competitor": {
+              "description": "Limit the comparison to one competitor. Omit to compare against all of them.",
+              "type": "string",
+              "enum": [
+                "signalhire",
+                "zoominfo",
+                "contactout"
+              ]
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "search_faq",
+        "title": "Search the FAQ",
+        "description": "Search Reachly's frequently asked questions about pricing, data accuracy, credits, mobile use and compliance.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "query": {
+              "description": "Keywords to match. Omit to return every FAQ entry.",
+              "type": "string"
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
