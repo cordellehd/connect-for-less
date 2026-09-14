@@ -17,14 +17,17 @@ export default defineTool({
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: ({ competitor }) => {
-    const picked = competitor ? [competitor] : [...competitors];
+    const picked: (typeof competitors)[number][] = competitor ? [competitor] : [...competitors];
     const rows = comparison.map((row) => ({
-      attribute: row.attribute,
-      reachly: row.reachly,
-      ...Object.fromEntries(picked.map((c) => [c, row[c]])),
+      attribute: row.attribute as string,
+      reachly: row.reachly as string,
+      others: Object.fromEntries(picked.map((c) => [c, row[c] as string])) as Record<string, string>,
     }));
     const text = rows
-      .map((r) => `${r.attribute}: Reachly ${r.reachly} | ${picked.map((c) => `${c} ${r[c]}`).join(" | ")}`)
+      .map(
+        (r) =>
+          `${r.attribute}: Reachly ${r.reachly} | ${picked.map((c) => `${c} ${r.others[c]}`).join(" | ")}`,
+      )
       .join("\n");
     return { content: [{ type: "text", text }], structuredContent: { rows } };
   },
